@@ -5,9 +5,11 @@ from datetime import *
 from time import *
 import csv
 
-
+# 祝日のデータを読み込む
 def import_Pholiday():
 	get_data = []
+
+	#祝日データ読み込み先のパス
 	path = './import_data/holiday_data.csv'
 	with open(path,'r',encoding="utf-8_sig") as f:
 		reader = csv.reader(f)
@@ -16,13 +18,18 @@ def import_Pholiday():
 
 	return get_data
 
+# csv出力先
 def write_csv(data):
+	# ソースと同じディレクトリにsome.csvとして書き出す
 	with open('some.csv', 'w') as f:
 		writer = csv.writer(f, lineterminator='\n')
 		for i in range(0,len(data)):
 			writer.writerow(data[i])
 
 def main():
+	#作成するトレンド日数
+	trendDay = 1860
+
 	# [日付,月,火,水,木,金,土,日,祝日,祝日の名前,休]
 	trend = [[]]
 	arr = ["日付","月","火","水","木","金","土","日","祝日","祝日の名前","休日","年末年始"]
@@ -35,8 +42,7 @@ def main():
 	for i in range(len(ph_day)):
 		ph_day[i][1] = datetime.strptime(ph_day[i][1], '%Y/%m/%d')
 		ph_day[i][1] = datetime.strftime(ph_day[i][1], '%Y%m%d')
-		#print(ph_day)
-		#
+
 	# 日付のフォーマット型を整形
 	first_day = day_now.replace(day=1)
 	day = datetime.strftime(first_day, '%Y%m%d')
@@ -44,7 +50,8 @@ def main():
 
 	trend[0] =arr
 
-	for i in range(1,1860):
+	# 各日にちのトレンドデータを作成
+	for i in range(0,trendDay):
 		trend.append([0]*12)
 		first_day = first_day - timedelta(days=1)
 		day = datetime.strftime(first_day, '%Y%m%d')
